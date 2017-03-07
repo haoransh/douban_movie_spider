@@ -34,14 +34,14 @@ def get_douban_movies():
     resp = requests.get("https://movie.douban.com/tag/", headers=headers, verify=False)
     assert resp.status_code == 200, resp.status_code
 
-    soup = BeautifulSoup(resp.text, "html5lib")
+    soup = BeautifulSoup(resp.text, "html.parser")
     a_list = soup.find_all("a", href=re.compile(r"^/tag/", flags=re.IGNORECASE))
     all_urls.update([(a_soup.get_text(), "https://movie.douban.com" + a_soup.get("href")) for a_soup in a_list])
 
     resp = requests.get("https://movie.douban.com/tag/?view=cloud", headers=headers, verify=False)
     assert resp.status_code == 200, resp.status_code
 
-    soup = BeautifulSoup(resp.text, "html5lib")
+    soup = BeautifulSoup(resp.text, "html.parser")
     a_list = soup.find_all("a", href=re.compile(r"^/tag/", flags=re.IGNORECASE))
     all_urls.update([(a_soup.get_text(), "https://movie.douban.com" + a_soup.get("href")) for a_soup in a_list])
     logging.warning("all urls: %s", len(all_urls))

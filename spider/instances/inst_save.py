@@ -28,7 +28,7 @@ class Saver(object):
         logging.debug("%s start: keys=%s, url=%s", self.__class__.__name__, keys, url)
 
         try:
-            save_result = self.item_save(url, keys, item)
+            save_result = self.item_save(item)
         except Exception as excep:
             save_result = False
             logging.error("%s error: %s, keys=%s, url=%s", self.__class__.__name__, excep, keys, url)
@@ -36,10 +36,10 @@ class Saver(object):
         logging.debug("%s end: save_result=%s, url=%s", self.__class__.__name__, save_result, url)
         return save_result
 
-    def item_save(self, url: str, keys: object, item: object) -> bool:
+    def item_save(self, item: object) -> bool:
         """
         save the item of a url, you can rewrite this function, parameters and return refer to self.working()
         """
-        self._save_pipe.write("\t".join([url, str(keys)] + [str(i) for i in item]) + "\n")
+        self._save_pipe.write("\t".join([str(i) for i in item]) + "\n")
         self._save_pipe.flush()
         return True
